@@ -9,10 +9,10 @@ import (
 
 func main() {
 	txt := `2009-01-21 hi gophers
-	- gopher sticker
-	2019-09-19 buy books
-	- I Know Why The Caged Bird Sings
-	- Go in Action`
+ - gopher sticker
+2019-09-19 buy books
+ - I Know Why The Caged Bird Sings
+ - Go in Action`
 
 	fmt.Println("--> Input:")
 	fmt.Println(txt)
