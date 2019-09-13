@@ -1,0 +1,50 @@
+{
+package tx
+}
+
+
+TXS <- tx:TX*  {
+    txs := tx.([]interface{})
+    var result  Transactions
+    for _, t := range txs {
+        result = append(result, t.(Transaction))
+    }
+    return result, nil
+}
+
+TX <- id:TX_ID SP t:TEXT NL item:ITEM* {
+    tx :=  Transaction {
+        ID:   id.(string),
+        Text:  t.(string),
+    }
+
+    items := item.([]interface{})
+    for _, i := range items {
+        tx.Items = append(tx.Items, i.(Item))
+    }
+
+    return tx ,nil
+}
+
+TX_ID <- DIGIT DIGIT DIGIT DIGIT HYPHEN DIGIT DIGIT HYPHEN DIGIT DIGIT {
+    return string(c.text), nil
+}
+
+ITEM <- SP HYPHEN SP t:TEXT (NL / EOF) {
+    return Item {
+        Name: t.(string),
+    }, nil
+}
+
+
+TEXT     <- (LETTER+ SP?)+ { return string(c.text), nil }
+LETTER   <- [A-Za-z] { return string(c.text), nil }
+DIGIT    <- [0-9] { return string(c.text), nil }
+HYPHEN   <- "-"
+SP       <- " "
+NL       <- "\n"
+COMMENT  <- "//" [^\r\n]*
+_        <- [ \n\t\r]*
+
+
+EOF <- !.
